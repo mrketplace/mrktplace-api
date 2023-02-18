@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
@@ -12,14 +13,23 @@ class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
+     ** request: GET
+     ** route: /users
      */
     public function index(): Response
     {
-        $users = User::all();
-        return response([
-            'users' =>  UserResource::collection($users),
-            'message' => 'Successful'
-        ], 200);
+        try {
+            $users = User::all();
+            return response([
+                'state' => 'SUCCESS',
+                'users' =>  $users,
+            ]);
+        } catch (Exception $exc) {
+            return response([
+                'state' => 'ERROR',
+                'msg' => $exc->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -53,34 +63,64 @@ class UserController extends Controller
 
     /**
      * Display the specified resource.
+     ** request: GET
+     ** route: /users/{id}
      */
     public function show(User $user): Response
     {
-        return response([
-            'user' => new UserResource($user),
-            'message' => 'Success'
-        ], 200);
+        try {
+            return response([
+                'state' => 'SUCCESS',
+                'user' => new UserResource($user),
+            ]);
+        } catch (Exception $exc) {
+            return response([
+                'state' => 'ERROR',
+                'msg' => $exc->getMessage(),
+            ], 500);
+        }
     }
 
     /**
      * Update the specified resource in storage.
+     ** request: PUT
+     ** route: /users/{id}
      */
     public function update(Request $request, User $user): Response
     {
-        $user->update($request->all());
-
-        return response([
-            'user' => new UserResource($user),
-            'message' => 'Success'
-        ], 200);
+        try {
+            $user->update($request->all());
+            return response([
+                'state' => 'SUCCESS',
+                'msg' => "Modification réussie !",
+                'user' => new UserResource($user),
+            ]);
+        } catch (Exception $exc) {
+            return response([
+                'state' => 'ERROR',
+                'msg' => $exc->getMessage(),
+            ], 500);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
+     ** request: DELETE
+     ** route: /users/{id}
      */
     public function destroy(User $user): Response
     {
-        $user->delete();
-        return response(['message' => 'Employee deleted']);
+        try {
+            $user->delete();
+            return response([
+                'state' => 'SUCCESS',
+                'msg' => 'Suppression réussie !',
+            ]);
+        } catch (Exception $exc) {
+            return response([
+                'state' => 'ERROR',
+                'msg' => $exc->getMessage(),
+            ], 500);
+        }
     }
 }
