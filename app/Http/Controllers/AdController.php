@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
-use App\Models\User;
+use App\Models\Ad;
 use Exception;
+use App\Http\Resources\AdResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
-class UserController extends Controller
+class AdController extends Controller
 {
     /**
      * Display a listing of the resource.
      ** request: GET
-     ** route: /users
+     ** route: /ads
      */
     public function index(): Response
     {
         try {
-            $users = User::all();
+            $ads = Ad::all();
             return response([
                 'state' => 'SUCCESS',
-                'users' =>  $users,
+                'ads' =>  $ads,
             ]);
         } catch (Exception $exc) {
             return response([
@@ -34,45 +34,44 @@ class UserController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * TODO -> Use this to do a thing in the future
+     ** request: POST
+     ** route: /ads
      */
     public function store(Request $request): Response
     {
-        $data = $request->all();
-
-        $validator = Validator::make($data, [
-            'name' => 'required|max:50',
-            'age' => 'required|max:50',
-            'job' => 'required|max:50',
-            'salary' => 'required|max:50'
-        ]);
-
-        if ($validator->fails()) {
-            return response([
-                'error' => $validator->errors(),
-                'Validation Error'
+        try {
+            // Data validation
+            $data = $request->validate([
+                'title' => 'required|max:100|unique:ads',
+                'summary' => 'required|max:255',
+                'content' => 'required|max:255',
             ]);
+            // Resource creation
+            $ad = Ad::create($data);
+            return response([
+                'state' => 'SUCCESS',
+                'msg' => 'Enregistrement réussi !',
+                'ad' => new AdResource($ad),
+            ]);
+        } catch (Exception $exc) {
+            return response([
+                'state' => 'ERROR',
+                'msg' => $exc->getMessage(),
+            ], 500);
         }
-
-        $user = User::create($data);
-
-        return response([
-            'user' => new UserResource($user),
-            'message' => 'Success'
-        ], 200);
     }
 
     /**
      * Display the specified resource.
      ** request: GET
-     ** route: /users/{id}
+     ** route: /ads/{id}
      */
-    public function show(User $user): Response
+    public function show(Ad $ad): Response
     {
         try {
             return response([
                 'state' => 'SUCCESS',
-                'user' => new UserResource($user),
+                'ad' => new AdResource($ad),
             ]);
         } catch (Exception $exc) {
             return response([
@@ -85,16 +84,16 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      ** request: PUT
-     ** route: /users/{id}
+     ** route: /ads/{id}
      */
-    public function update(Request $request, User $user): Response
+    public function update(Request $request, Ad $ad): Response
     {
         try {
-            $user->update($request->all());
+            $ad->update($request->all());
             return response([
                 'state' => 'SUCCESS',
                 'msg' => "Modification réussie !",
-                'user' => new UserResource($user),
+                'ad' => new AdResource($ad),
             ]);
         } catch (Exception $exc) {
             return response([
@@ -107,12 +106,12 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      ** request: DELETE
-     ** route: /users/{id}
+     ** route: /ads/{id}
      */
-    public function destroy(User $user): Response
+    public function destroy(Ad $ad): Response
     {
         try {
-            $user->delete();
+            $ad->delete();
             return response([
                 'state' => 'SUCCESS',
                 'msg' => 'Suppression réussie !',

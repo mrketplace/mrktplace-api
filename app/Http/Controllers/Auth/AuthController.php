@@ -18,7 +18,7 @@ class AuthController extends Controller
     {
         try {
             // Catch already existing emails
-            if (User::where(['email' => $request->email])->first()) {
+            if (User::where(['email' => $request->email])->exists()) {
                 return response([
                     'state' => 'EMAIL_EXISTS',
                     'msg' => "L'adresse email saisie existe déjà. Veuillez en choisir une autre.",

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\AdController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,7 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Auth routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-
-Route::apiResource('/users', UserController::class);//->middleware('auth:api');
+// Routes require authentication first
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::apiResource('/users', UserController::class);
+    Route::apiResource('/ads', AdController::class);
+});
