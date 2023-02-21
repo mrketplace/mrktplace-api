@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 // Auth routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout']);
 // Routes require authentication first
 Route::group(['middleware' => 'auth:api'], function () {
     Route::apiResource('/users', UserController::class);

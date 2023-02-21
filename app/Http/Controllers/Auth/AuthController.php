@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -79,6 +80,36 @@ class AuthController extends Controller
                 'state' => 'SUCCESS',
                 'user' => $user,
                 'token' => $token,
+            ]);
+        } catch (Exception $exc) {
+            return response([
+                'state' => 'ERROR',
+                'msg' => $exc->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Handle user logout request
+     ** request: POST
+     ** route: /logout
+     */
+    public function logout(Request $request)
+    {
+        try {
+            $user = auth('api')->user();
+            // Case: User already logged out
+            if (!$user) {
+                return response([
+                    'state' => 'LOGOUT_FAILED',
+                    'msg' => 'Cet utilisateur est déjà déconnecté.',
+                ]);
+            }
+            // Log the user out from his device
+            $user->token()->revoke();
+            return response([
+                'state' => 'SUCCESS',
+                'msg' => "Utilisateur déconnecté.",
             ]);
         } catch (Exception $exc) {
             return response([
