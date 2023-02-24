@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Ad;
 use Exception;
-use App\Http\Resources\AdResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
@@ -51,7 +50,7 @@ class AdController extends Controller
             return response([
                 'state' => 'SUCCESS',
                 'msg' => 'Enregistrement réussi !',
-                'ad' => new AdResource($ad),
+                'ad' => $ad,
             ]);
         } catch (Exception $exc) {
             return response([
@@ -71,7 +70,7 @@ class AdController extends Controller
         try {
             return response([
                 'state' => 'SUCCESS',
-                'ad' => new AdResource($ad),
+                'ad' => $ad,
             ]);
         } catch (Exception $exc) {
             return response([
@@ -93,7 +92,7 @@ class AdController extends Controller
             return response([
                 'state' => 'SUCCESS',
                 'msg' => "Modification réussie !",
-                'ad' => new AdResource($ad),
+                'ad' => $ad,
             ]);
         } catch (Exception $exc) {
             return response([

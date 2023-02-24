@@ -18,11 +18,11 @@ return new class extends Migration
             $table->string('tel');
             $table->string('gender');
             $table->string('address');
-            $table->string('role');
             $table->string('email')->unique();
             $table->string('password');
-            $table->timestamp('email_verified_at')->nullable();
+            $table->foreignId('role_id')->constrained('roles'); // The role of the user
             $table->rememberToken();
+            $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
     }

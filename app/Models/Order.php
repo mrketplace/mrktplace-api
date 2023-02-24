@@ -17,4 +17,12 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Get with all relationships.
+     */
+    public function withAll(): Order
+    {
+        return $this->with(['user'])->first();
+    }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -19,7 +18,7 @@ class UserController extends Controller
     public function index(): Response
     {
         try {
-            $users = User::all();
+            $users = User::with(['role'])->get();
             return response([
                 'state' => 'SUCCESS',
                 'users' =>  $users,
@@ -57,7 +56,7 @@ class UserController extends Controller
         $user = User::create($data);
 
         return response([
-            'user' => new UserResource($user),
+            'user' => $user->withAll(),
             'message' => 'Success'
         ], 200);
     }
@@ -72,7 +71,7 @@ class UserController extends Controller
         try {
             return response([
                 'state' => 'SUCCESS',
-                'user' => new UserResource($user),
+                'user' => $user->withAll(),
             ]);
         } catch (Exception $exc) {
             return response([
@@ -94,7 +93,7 @@ class UserController extends Controller
             return response([
                 'state' => 'SUCCESS',
                 'msg' => "Modification réussie !",
-                'user' => new UserResource($user),
+                'user' => $user->withAll(),
             ]);
         } catch (Exception $exc) {
             return response([

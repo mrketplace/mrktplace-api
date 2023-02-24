@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->string('summary')->nullable();
             $table->string('content');
+            $table->string('img')->default('/img/ads/pub.jpg');
             $table->timestamps();
         });
     }

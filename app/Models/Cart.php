@@ -17,4 +17,12 @@ class Cart extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Get with all relationships.
+     */
+    public function withAll(): Cart
+    {
+        return $this->with(['user'])->first();
+    }
 }

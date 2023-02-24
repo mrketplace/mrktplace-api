@@ -25,4 +25,12 @@ class CartContainsProduct extends Model
     {
         return $this->hasOne(Product::class);
     }
+
+    /**
+     * Get with all relationships.
+     */
+    public function withAll(): CartContainsProduct
+    {
+        return $this->with(['cart', 'product'])->first();
+    }
 }

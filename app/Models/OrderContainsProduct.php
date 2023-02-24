@@ -24,4 +24,12 @@ class OrderContainsProduct extends Model
     {
         return $this->hasOne(Product::class);
     }
+
+    /**
+     * Get with all relationships.
+     */
+    public function withAll(): OrderContainsProduct
+    {
+        return $this->with(['order', 'product'])->first();
+    }
 }

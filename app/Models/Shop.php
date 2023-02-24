@@ -26,4 +26,12 @@ class Shop extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    /**
+     * Get with all relationships.
+     */
+    public function withAll(): Shop
+    {
+        return $this->with(['user', 'products'])->first();
+    }
 }

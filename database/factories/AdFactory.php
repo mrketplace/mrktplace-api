@@ -17,7 +17,9 @@ class AdFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => fake()->unique()->title(),
+            'summary' => fake()->text(),
+            'content' => fake()->text(),
         ];
     }
 }

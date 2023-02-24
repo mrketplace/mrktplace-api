@@ -17,4 +17,12 @@ class Product extends Model
     {
         return $this->belongsTo(Shop::class);
     }
+
+    /**
+     * Get with all relationships.
+     */
+    public function withAll(): Product
+    {
+        return $this->with(['shop'])->first();
+    }
 }

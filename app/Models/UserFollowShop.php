@@ -24,4 +24,12 @@ class UserFollowShop extends Model
     {
         return $this->hasOne(Shop::class);
     }
+
+    /**
+     * Get with all relationships.
+     */
+    public function withAll(): UserFollowShop
+    {
+        return $this->with(['user', 'shop'])->first();
+    }
 }
