@@ -23,6 +23,6 @@ class Product extends Model
      */
     public function withAll(): Product
     {
-        return $this->with(['shop'])->first();
+        return Product::with(['shop'])->find($this->id);
     }
 }

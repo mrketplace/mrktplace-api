@@ -26,9 +26,9 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 // Routes who need authentication
 Route::group(['middleware' => 'auth:api'], function () {
-    Route::apiResource('/roles', RoleController::class);
-    Route::apiResource('/users', UserController::class);
-    Route::apiResource('/ads', AdController::class);
-    Route::apiResource('/shops', ShopController::class);
 });
+Route::apiResource('/roles', RoleController::class);
+Route::apiResource('/users', UserController::class);
+Route::apiResource('/ads', AdController::class);
+Route::apiResource('/shops', ShopController::class);
 Route::apiResource('/products', ProductController::class);

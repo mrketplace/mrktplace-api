@@ -23,6 +23,6 @@ class Order extends Model
      */
     public function withAll(): Order
     {
-        return $this->with(['user'])->first();
+        return Order::with(['user'])->find($this->id);
     }
 }

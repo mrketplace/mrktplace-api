@@ -23,6 +23,6 @@ class Cart extends Model
      */
     public function withAll(): Cart
     {
-        return $this->with(['user'])->first();
+        return Cart::with(['user'])->find($this->id);
     }
 }

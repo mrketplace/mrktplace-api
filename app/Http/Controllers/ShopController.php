@@ -19,7 +19,7 @@ class ShopController extends Controller
     public function index(): Response
     {
         try {
-            $shops = Shop::all();
+            $shops = Shop::with(['user'])->get();
             return response([
                 'state' => 'SUCCESS',
                 'shops' =>  $shops,

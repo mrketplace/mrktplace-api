@@ -32,6 +32,6 @@ class Shop extends Model
      */
     public function withAll(): Shop
     {
-        return $this->with(['user', 'products'])->first();
+        return Shop::with(['user', 'products'])->find($this->id);
     }
 }

@@ -84,6 +84,6 @@ class User extends Authenticatable
      */
     public function withAll(): User
     {
-        return $this->with(['role', 'shops', 'carts', 'orders'])->first();
+        return User::with(['role', 'shops', 'carts', 'orders'])->find($this->id);
     }
 }

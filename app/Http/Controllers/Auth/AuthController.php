@@ -72,7 +72,7 @@ class AuthController extends Controller
                 ]);
             }
             // Case: Authentication successful
-            $user = auth()->user();
+            $user = auth()->user()->withAll();
             $token = $user->createToken('API Token')->accessToken;
             // Note: Old tokens isn't deleted when a new login request is handled
             // Is it an issue ?

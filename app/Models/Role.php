@@ -31,6 +31,6 @@ class Role extends Model
      */
     public function withAll(): Role
     {
-        return $this->with(['users'])->first();
+        return Role::with(['users'])->find($this->id);
     }
 }
