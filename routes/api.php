@@ -31,4 +31,8 @@ Route::apiResource('/roles', RoleController::class);
 Route::apiResource('/users', UserController::class);
 Route::apiResource('/ads', AdController::class);
 Route::apiResource('/shops', ShopController::class);
-Route::apiResource('/products', ProductController::class);
+Route::group(['prefix' => 'products'], function () {
+    Route::apiResource('/', ProductController::class);
+    Route::get('/by-shop/{id}', [ProductController::class, 'getProductsByShop']);
+    Route::get('/by-seller/{id}', [ProductController::class, 'getProductsBySeller']);
+});
