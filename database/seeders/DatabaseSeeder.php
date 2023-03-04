@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Product::factory(10)->create();
         \App\Models\Ad::factory(5)->create();
         \App\Models\Image::factory(5)->create();
+        $this->call(ProductHaveImageSeeder::class);
         \App\Models\ProductHaveImage::factory(5)->create();
     }
 }
