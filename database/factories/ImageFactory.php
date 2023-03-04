@@ -17,7 +17,7 @@ class ImageFactory extends Factory
     public function definition(): array
     {
         return [
-            'path' => 'http://127.0.0.1:8000/img/products/product_template.jpg',
+            //
         ];
     }
 }
