@@ -21,7 +21,8 @@ class ProductFactory extends Factory
         return [
             'name' => fake()->name(),
             'description' => fake()->text(),
-            'img' => 'http://127.0.0.1:8000/img/products/product_template.jpg',
+            'price' => fake()->numberBetween(500, 975875),
+            'quantity' => fake()->numberBetween(0, 99),
             'shop_id' => array_rand($shop_ids) + 1,
         ];
     }

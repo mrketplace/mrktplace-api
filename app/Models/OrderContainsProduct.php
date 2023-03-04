@@ -17,6 +17,7 @@ class OrderContainsProduct extends Model
     {
         return $this->hasOne(Order::class);
     }
+
     /**
      * Get the associated product.
      */

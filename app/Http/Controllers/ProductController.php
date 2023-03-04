@@ -86,7 +86,7 @@ class ProductController extends Controller
             return response([
                 'state' => 'SUCCESS',
                 'seller' => User::find($seller_id)->withAll(),
-                'shops' => Shop::with(['products'])->where(['shops.user_id' => $seller_id])->get(),
+                'shops' => Shop::with(['products.images'])->where(['shops.user_id' => $seller_id])->get(),
             ]);
         } catch (Exception $exc) {
             return response([
