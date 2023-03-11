@@ -18,7 +18,7 @@ class ProductController extends Controller
     public function index(): Response
     {
         try {
-            $products = Product::all();
+            $products = Product::whereNull('deleted_at')->get();
             return response([
                 'state' => 'SUCCESS',
                 'products' =>  $products,
@@ -62,7 +62,7 @@ class ProductController extends Controller
             return response([
                 'state' => 'SUCCESS',
                 'shop' => Shop::find($shop_id),
-                'products' => Product::where(['shop_id' => $shop_id])->get(),
+                'products' => Product::where(['shop_id' => $shop_id])->whereNull('deleted_at')->get(),
             ]);
         } catch (Exception $exc) {
             return response([
@@ -83,7 +83,11 @@ class ProductController extends Controller
             return response([
                 'state' => 'SUCCESS',
                 'seller' => User::find($seller_id)->withAll(),
-                'shops' => Shop::with(['products.images'])->where(['shops.user_id' => $seller_id])->get(),
+                'shops' => Shop::with([
+                    'products' => function ($query) {
+                        $query->whereNull('deleted_at')->with('images');
+                    }
+                ])->where(['shops.user_id' => $seller_id])->get(),
             ]);
         } catch (Exception $exc) {
             return response([
