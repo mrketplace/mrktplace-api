@@ -11,6 +11,14 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 class Product extends Model
 {
     use HasFactory;
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'deleted_at',
+    ];
 
     /**
      * Get the shop that owns the product.

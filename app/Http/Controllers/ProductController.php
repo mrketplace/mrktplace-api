@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
 use App\Models\Shop;
 use App\Models\User;
 use Exception;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 
 class ProductController extends Controller
@@ -87,6 +84,37 @@ class ProductController extends Controller
                 'state' => 'SUCCESS',
                 'seller' => User::find($seller_id)->withAll(),
                 'shops' => Shop::with(['products.images'])->where(['shops.user_id' => $seller_id])->get(),
+            ]);
+        } catch (Exception $exc) {
+            return response([
+                'state' => 'ERROR',
+                'msg' => $exc->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     ** request: DELETE
+     ** route: /products/{id}
+     */
+    public function destroy(Product $product): Response
+    {
+        try {
+            // Check if product was already deleted
+            if ($product->deleted_at != null) {
+                return response([
+                    'state' => 'PRODUCT_ALREADY_DELETED',
+                    'msg' => 'Le produit a déjà été retiré de votre boutique.',
+                ]);
+            }
+            // Set deleted date of the product & return server message
+            $product->update([
+                'deleted_at' => now()
+            ]);
+            return response([
+                'state' => 'SUCCESS',
+                'msg' => 'Suppression réussie !',
             ]);
         } catch (Exception $exc) {
             return response([

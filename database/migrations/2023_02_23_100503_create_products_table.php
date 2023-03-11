@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('price')->default(0);
             $table->integer('quantity')->default(0);
             $table->foreignId('shop_id')->constrained('shops');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }
